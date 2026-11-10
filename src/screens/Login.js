@@ -1,11 +1,34 @@
-import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native';
 import { useState, useContext } from 'react';
 import { IdiomaContext } from '../context/IdiomaContext';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+const API_URL = 'http://10.0.2.2:3000'
+
 export default function Login({navigation}) {
 
     const { idioma } = useContext(IdiomaContext);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const IniciarSesion = async () => {
+        try {
+            const respuesta = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({ email: email.trim(), password })
+            });
+            const data = await respuesta.json();
+
+            if (respuesta.ok) {
+                navigation.replace('Menu');
+            } else {
+                Alert.alert('Error', data.message);
+            }
+        } catch (error) {
+            Alert.alert('Error', 'No se pudo conectar con el servidor');
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -14,13 +37,20 @@ export default function Login({navigation}) {
             >
             <Text style={styles.text}>{idioma === 'es' ? 'Iniciar sesion' : 'Login'}</Text>
             <View style={styles.listContainer}>
-                <Text style={styles.textInput}>{idioma === 'es' ? 'Usuario' : 'User'}</Text>
-                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'nombre de usuario' : 'username'} />
+                <Text style={styles.textInput}>{idioma === 'es' ? 'Correo' : 'Email'}</Text>
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'Ingrese correo electronico' : 'Enter email address'} 
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                />
                 <Text style={styles.textInput}>{idioma === 'es' ? 'Contraseña' : 'Password'}</Text>
-                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'contraseña' : 'password'} secureTextEntry={true} />
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'contraseña' : 'password'} secureTextEntry={true}
+                value={password}
+                onChangeText={setPassword}
+                />
             </View>
             <TouchableOpacity style={styles.button}
-            onPress={() => navigation.navigate('Menu')}>
+            onPress={IniciarSesion}>
                 <Text style={styles.buttonText}>{idioma === 'es' ? 'Iniciar sesión' : 'Login'}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}

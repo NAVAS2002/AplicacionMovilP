@@ -9,3 +9,4 @@ Stack para navegar entre pantallas:
 --3.Implementar selector de idioma con context Api
 3.-Dentro de la misma aplicación generar un login, que consuma el backend
 --1.Se crea la interfaz que luego se conectara al backend
+--2.Conexion del login
