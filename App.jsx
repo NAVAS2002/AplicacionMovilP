@@ -27,7 +27,7 @@ function Menu() {
         tabBarActiveBackgroundColor: '#dbeafe',
       }}
     >
-      <Tab.Screen
+      <Tab.Screen 
         name="Inicio"
         component={Productos}
         options={{

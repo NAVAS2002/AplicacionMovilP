@@ -10,3 +10,4 @@ Stack para navegar entre pantallas:
 3.-Dentro de la misma aplicación generar un login, que consuma el backend
 --1.Se crea la interfaz que luego se conectara al backend
 --2.Conexion del login
+--3.Conexion del register

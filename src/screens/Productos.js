@@ -1,6 +1,7 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import { useContext } from 'react';
 import { IdiomaContext } from '../context/IdiomaContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 
 export default function Productos({ navigation }) {
@@ -8,7 +9,11 @@ export default function Productos({ navigation }) {
     const { idioma } = useContext(IdiomaContext);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.safeArea}>
+            <ScrollView contentContainerStyle={styles.container}
+                keyboardShouldPersistTaps="handled"
+            >
+        <View>
             <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate('NuevoProducto')}>
                 <Text style={styles.buttonText}>{idioma === 'es' ? 'Nuevo producto' : 'New Product'}</Text>
@@ -19,16 +24,18 @@ export default function Productos({ navigation }) {
                 <Text style={styles.text}>Producto 2</Text>
                 <Text style={styles.text}>Producto 3</Text>
             </View>
-        </View>        
+        </View>
+        </ScrollView>
+        </SafeAreaView>      
     );
 
 }  
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexGrow: 1,
+        padding: 20,
+        backgroundColor: '#ffffff',
     },
     button: {
         backgroundColor: '#2563eb',
