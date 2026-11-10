@@ -1,14 +1,19 @@
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { useContext } from 'react';
+import { IdiomaContext } from '../context/IdiomaContext';
 
 
 export default function Productos({ navigation }) {
+
+    const { idioma } = useContext(IdiomaContext);
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button}
             onPress={() => navigation.navigate('NuevoProducto')}>
-                <Text style={styles.buttonText}>Agregar Producto</Text>
+                <Text style={styles.buttonText}>{idioma === 'es' ? 'Nuevo producto' : 'New Product'}</Text>
             </TouchableOpacity>
-            <Text style={styles.text}>Productos:</Text>
+            <Text style={styles.text}>{idioma === 'es' ? 'Mis Productos' : 'My products'}</Text>
             <View style={styles.listContainer}>
                 <Text style={styles.text}>Producto 1</Text>
                 <Text style={styles.text}>Producto 2</Text>

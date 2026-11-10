@@ -1,10 +1,13 @@
 import {View, Text, StyleSheet, TouchableOpacity, TextInput, Image, Alert, PermissionsAndroid, ScrollView} from 'react-native';
 import { launchCamera } from 'react-native-image-picker';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { IdiomaContext } from '../context/IdiomaContext';
+
 
 export default function NuevoProducto() {
 
     const [foto, setFoto] = useState(null);
+    const { idioma } = useContext(IdiomaContext);
 
     async function tomarFoto() {
 
@@ -51,30 +54,31 @@ export default function NuevoProducto() {
         <ScrollView contentContainerStyle={styles.container}
                 keyboardShouldPersistTaps="handled"
             >
-            <Text style={styles.text}>Ingrese Nuevo Producto:</Text>
+            <Text style={styles.text}>{idioma === 'es' ? 'Mis Productos' : 'My Products'}</Text>
             <View style={styles.listContainer}>
-                <Text style={styles.text}>Nombre</Text>
-                <TextInput style={styles.input} placeholder="Nombre del producto" />
-                <Text style={styles.text}>Precio</Text>
-                <TextInput style={styles.input} placeholder="Precio del producto" keyboardType="numeric" />
-                <Text style={styles.text}>Descripcion</Text>
-                <TextInput style={styles.input} placeholder="Descripcion del producto" />
-                <Text style={styles.text}>Categoria</Text>
-                <TextInput style={styles.input} placeholder="Categoria del producto" />
+                <Text style={styles.text}>{idioma === 'es' ? 'Nombre' : 'Name'}</Text>
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'nombre del producto' : 'name of the product'} />
+                <Text style={styles.text}>{idioma === 'es' ? 'Precio' : 'price'}</Text>
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'Precio del productoo' : 'Price of the product'} />
+                <Text style={styles.text}>{idioma === 'es' ? 'Descripcion' : 'Description'}</Text>
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'Descripcion del producto' : 'Description of the product'} />
+                <Text style={styles.text}>{idioma === 'es' ? 'Categoria' : 'Category'}</Text>
+                <TextInput style={styles.input} placeholder={idioma === 'es' ? 'Categoria del producto' : 'Category of the product'} />
             </View>
             <TouchableOpacity style={styles.button}
             onPress={tomarFoto}>
-                <Text style={styles.buttonText}>{foto ? 'cambiar imagen' : 'adjuntar imagen'}</Text>
+                <Text style={styles.buttonText}>{foto ? (idioma === 'es' ? 'Cambiar imagen' : 'Change image')
+                : (idioma === 'es' ? 'Adjuntar imagen' : 'Attach image')}</Text>
             </TouchableOpacity>
             {foto && <View>
                 <Image
                     source={{ uri: foto }}
                     style={styles.foto}
-                    risizeMode="contain"
+                    resizeMode="contain"
                 />                
                 <TouchableOpacity style={styles.button}
                 onPress={() => setFoto(null)}>
-                    <Text style={styles.buttonText}>Eliminar Imagen</Text>
+                    <Text style={styles.buttonText}>{idioma === 'es' ? 'Borrar imagen' : 'Delete image'}</Text>
                 </TouchableOpacity>
                 </View>}
         </ScrollView>        
@@ -127,9 +131,5 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         color: '#0f172a',
         backgroundColor: '#ffffff',
-    },
-    listContainer: {
-        width: '100%',
-        marginTop: 20,
     },
 });

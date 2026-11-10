@@ -1,16 +1,22 @@
+import { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Login from './src/screens/Login';
+import Register from './src/screens/Register';
 import Productos from './src/screens/Productos';
 import Ajustes from './src/screens/Ajustes';
 import NuevoProducto from './src/screens/NuevoProducto';
+import { IdiomaProvider, IdiomaContext } from './src/context/IdiomaContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function Menu() {
+  const { idioma } = useContext(IdiomaContext);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -24,34 +30,62 @@ function Menu() {
       <Tab.Screen
         name="Inicio"
         component={Productos}
+        options={{
+          title: idioma === 'es' ? 'Mis productos' : 'My products',
+        }}
       />
 
       <Tab.Screen
         name="Ajustes"
         component={Ajustes}
+        options={{
+          title: idioma === 'es' ? 'Ajustes' : 'Settings',
+        }}
       />
     </Tab.Navigator>
+  );
+}
+
+function Navegacion() {
+  const { idioma } = useContext(IdiomaContext);
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator InitialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Menu"
+          component={Menu}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="NuevoProducto"
+          component={NuevoProducto}
+          options={{
+            title: idioma === 'es' ? 'Nuevo producto' : 'New product',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Menu"
-            component={Menu}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="NuevoProducto"
-            component={NuevoProducto}
-            options={{ title: 'Nuevo producto' }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <IdiomaProvider>
+        <Navegacion />
+      </IdiomaProvider>
     </SafeAreaProvider>
   );
 }
