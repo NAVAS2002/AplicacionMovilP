@@ -31,6 +31,7 @@ export default function Productos({ navigation }) {
           Authorization: `Bearer ${token}`,
         },
       });
+      
       const data = await respuesta.json();
 
       if (respuesta.ok) {
