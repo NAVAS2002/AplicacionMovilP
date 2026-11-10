@@ -2,12 +2,15 @@ import {View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView, Alert} 
 import { useState, useContext } from 'react';
 import { IdiomaContext } from '../context/IdiomaContext';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { AuthContext } from '../context/AuthContext';
+
 
 const API_URL = 'http://10.0.2.2:3000'
 
 export default function Login({navigation}) {
 
     const { idioma } = useContext(IdiomaContext);
+    const { setToken } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -18,9 +21,11 @@ export default function Login({navigation}) {
                 headers: { 'content-type': 'application/json' },
                 body: JSON.stringify({ email: email.trim(), password })
             });
+            
             const data = await respuesta.json();
 
             if (respuesta.ok) {
+                setToken(data.token);
                 navigation.replace('Menu');
             } else {
                 Alert.alert('Error', data.message);

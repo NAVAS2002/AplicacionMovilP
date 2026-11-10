@@ -10,6 +10,7 @@ import Productos from './src/screens/Productos';
 import Ajustes from './src/screens/Ajustes';
 import NuevoProducto from './src/screens/NuevoProducto';
 import { IdiomaProvider, IdiomaContext } from './src/context/IdiomaContext';
+import { AuthProvider } from './src/context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -83,9 +84,11 @@ function Navegacion() {
 export default function App() {
   return (
     <SafeAreaProvider>
+      <AuthProvider>
       <IdiomaProvider>
         <Navegacion />
       </IdiomaProvider>
+      </AuthProvider>
     </SafeAreaProvider>
   );
 }

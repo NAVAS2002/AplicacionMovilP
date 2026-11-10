@@ -11,3 +11,6 @@ Stack para navegar entre pantallas:
 --1.Se crea la interfaz que luego se conectara al backend
 --2.Conexion del login
 --3.Conexion del register
+4.-El crud de productos debe estar conectado al server, al desloguearme y volver a loguear debe traerme mis fotos y productos
+--1.Configurar token de inicio, es necesario ya que las rutas se encuentran protegidas
+--2.Modificacion de pantallas, se aplico funcionalidad

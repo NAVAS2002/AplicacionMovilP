@@ -104,13 +104,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center',
     },
-    foto: {
-        width: '100%',
-        height: 200,
-        borderRadius: 12,
-        backgroundColor: '#e2e8f0',
-        marginBottom: 15,
-    },
     input: {
         width: '100%',
         borderWidth: 1,
