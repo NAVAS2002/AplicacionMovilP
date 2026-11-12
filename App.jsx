@@ -1,16 +1,18 @@
 import { useContext } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Login from './src/screens/Login';
+import Home from './src/screens/Home';
 import Register from './src/screens/Register';
 import Productos from './src/screens/Productos';
 import Ajustes from './src/screens/Ajustes';
 import NuevoProducto from './src/screens/NuevoProducto';
 import { IdiomaProvider, IdiomaContext } from './src/context/IdiomaContext';
 import { AuthProvider } from './src/context/AuthContext';
+import { AuthContext } from './src/context/AuthContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,6 +23,8 @@ function Menu() {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarIcon: () => null,
+        tabBarIconStyle: { display: 'none' },
         tabBarStyle: styles.barra,
         tabBarLabelStyle: styles.texto,
         tabBarActiveTintColor: '#2563eb',
@@ -49,33 +53,48 @@ function Menu() {
 
 function Navegacion() {
   const { idioma } = useContext(IdiomaContext);
+  const { token } = useContext(AuthContext);
 
   return (
     <NavigationContainer>
-      <Stack.Navigator InitialRouteName="Login">
-        <Stack.Screen
-          name="Login"
-          component={Login}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={Register}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Menu"
-          component={Menu}
-          options={{ headerShown: false }}
-        />
+      <Stack.Navigator initialRouteName={'Home'}>
+        {token ? (
+          <>
+            <Stack.Screen
+              name="Menu"
+              component={Menu}
+              options={{ headerShown: false }}
+            />
 
-        <Stack.Screen
-          name="NuevoProducto"
-          component={NuevoProducto}
-          options={{
-            title: idioma === 'es' ? 'Nuevo producto' : 'New product',
-          }}
-        />
+            <Stack.Screen
+              name="NuevoProducto"
+              component={NuevoProducto}
+              options={{
+                title: idioma === 'es' ? 'Nuevo producto' : 'New product',
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{ headerShown: false }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -84,6 +103,7 @@ function Navegacion() {
 export default function App() {
   return (
     <SafeAreaProvider>
+      <StatusBar hidden={false} barStyle="dark-content" />
       <AuthProvider>
       <IdiomaProvider>
         <Navegacion />

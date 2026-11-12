@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { IdiomaContext } from '../context/IdiomaContext';
 import { AuthContext } from '../context/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { styles, colores } from '../Styles/Styles';
 
 const API_URL = 'http://10.0.2.2:3000';
 
@@ -144,16 +145,10 @@ export default function NuevoProducto({ navigation, route }) {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>
-            {esEdicion
-              ? (idioma === 'es' ? 'Editar Producto' : 'Edit Product')
-              : (idioma === 'es' ? 'Nuevo Producto' : 'New Product')}
-          </Text>
-
-          <Text style={styles.textInput}>{idioma === 'es' ? 'Nombre' : 'Name'}</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.contenido} keyboardShouldPersistTaps="handled">
+        <View>
+          <Text style={styles.texto}>{idioma === 'es' ? 'Nombre' : 'Name'}</Text>
           <TextInput
             style={styles.input}
             placeholder={idioma === 'es' ? 'Nombre del producto' : 'Product name'}
@@ -161,7 +156,7 @@ export default function NuevoProducto({ navigation, route }) {
             onChangeText={setName}
           />
 
-          <Text style={styles.textInput}>{idioma === 'es' ? 'Precio' : 'Price'}</Text>
+          <Text style={styles.texto}>{idioma === 'es' ? 'Precio' : 'Price'}</Text>
           <TextInput
             style={styles.input}
             placeholder={idioma === 'es' ? 'Precio' : 'Price'}
@@ -170,7 +165,7 @@ export default function NuevoProducto({ navigation, route }) {
             keyboardType="numeric"
           />
 
-          <Text style={styles.textInput}>{idioma === 'es' ? 'Descripción' : 'Description'}</Text>
+          <Text style={styles.texto}>{idioma === 'es' ? 'Descripción' : 'Description'}</Text>
           <TextInput
             style={styles.input}
             placeholder={idioma === 'es' ? 'Descripción' : 'Description'}
@@ -178,17 +173,18 @@ export default function NuevoProducto({ navigation, route }) {
             onChangeText={setDescription}
           />
 
-          <Text style={styles.textInput}>{idioma === 'es' ? 'Categoría' : 'Category'}</Text>
+          <Text style={styles.texto}>{idioma === 'es' ? 'Categoría' : 'Category'}</Text>
           <TextInput
             style={styles.input}
             placeholder={idioma === 'es' ? 'Categoría' : 'Category'}
             value={categoria}
             onChangeText={setCategoria}
           />
-
+          </View>
+          <View style={styles.contenido}>
           {!esEdicion && (
             <>
-              <TouchableOpacity style={styles.imageButton} onPress={tomarFoto}>
+              <TouchableOpacity style={styles.button} onPress={tomarFoto}>
                 <Text style={styles.buttonText}>
                   {foto
                     ? (idioma === 'es' ? 'Cambiar foto' : 'Change photo')
@@ -197,10 +193,10 @@ export default function NuevoProducto({ navigation, route }) {
               </TouchableOpacity>
 
               {foto && (
-                <View style={styles.previewContainer}>
+                <View style={styles.fotoContainer}>
                   <Image source={{ uri: foto.uri }} style={styles.foto} resizeMode="cover" />
-                  <TouchableOpacity style={styles.deletePhotoButton} onPress={() => setFoto(null)}>
-                    <Text style={styles.deletePhotoText}>
+                  <TouchableOpacity style={styles.button} onPress={() => setFoto(null)}>
+                    <Text style={styles.buttonText}>
                       {idioma === 'es' ? 'Borrar foto' : 'Remove photo'}
                     </Text>
                   </TouchableOpacity>
@@ -208,11 +204,8 @@ export default function NuevoProducto({ navigation, route }) {
               )}
             </>
           )}
-        </View>
-
-        <View style={styles.footer}>
           <TouchableOpacity
-            style={styles.saveButton}
+            style={styles.button} 
             onPress={guardarProducto}
             disabled={cargando}
           >
@@ -232,83 +225,3 @@ export default function NuevoProducto({ navigation, route }) {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  container: {
-    flexGrow: 1,
-    justifyContent: 'space-between',
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  formContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#0f172a',
-  },
-  textInput: {
-    width: '100%',
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#334155',
-    marginBottom: 6,
-  },
-  input: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#cbd5e1',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 15,
-    color: '#0f172a',
-    backgroundColor: '#ffffff',
-  },
-  imageButton: {
-    backgroundColor: '#64748b',
-    paddingVertical: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  previewContainer: {
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  foto: {
-    width: '100%',
-    height: 180,
-    borderRadius: 10,
-    marginBottom: 8,
-  },
-  deletePhotoButton: {
-    paddingVertical: 6,
-  },
-  deletePhotoText: {
-    color: '#dc2626',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  footer: {
-    paddingVertical: 10,
-  },
-  saveButton: {
-    backgroundColor: '#2563eb',
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 3,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

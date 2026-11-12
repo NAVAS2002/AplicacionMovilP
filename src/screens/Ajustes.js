@@ -1,14 +1,24 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useContext } from 'react';
 import { IdiomaContext } from '../context/IdiomaContext';
+import {AuthContext} from '../context/AuthContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import { styles, colores } from '../Styles/Styles';
 
 export default function Ajustes({navigation}) {
   const { idioma, setIdioma } = useContext(IdiomaContext);
+  const { setToken } = useContext(AuthContext);
+
+  function cerrarSesion() {
+    setToken(null);
+  }
+
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>
-        {idioma === 'es' ? 'Seleccionar idioma' : 'Select language'}
+    <SafeAreaView style={styles.container}>
+    <View style={[styles.contenido, styles.centrado]}>
+      <Text style={[styles.titulo, styles.centrado]}>
+        {idioma === 'es' ? 'Seleccionar idioma:' : 'Select language:'}
       </Text>
 
       <TouchableOpacity
@@ -18,7 +28,7 @@ export default function Ajustes({navigation}) {
         ]}
         onPress={() => setIdioma('es')}
       >
-        <Text style={styles.buttonText}>Español</Text>
+        <Text style={styles.buttonText}>{idioma === 'es' ? 'Español' : 'Spanish'}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -31,60 +41,11 @@ export default function Ajustes({navigation}) {
         <Text style={styles.buttonText}>English</Text>
       </TouchableOpacity>
 
-      <Text style={styles.estado}>
-        {idioma === 'es'
-          ? 'Idioma actual: Español'
-          : 'Current language: English'}
-      </Text>
-      <TouchableOpacity style={styles.buttonC} 
-      onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity style={styles.button} 
+      onPress={cerrarSesion}>
         <Text style={styles.buttonText}>Cerrar sesion</Text>
       </TouchableOpacity>
     </View>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  text: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#0f172a',
-    marginBottom: 24,
-  },
-  button: {
-    width: '100%',
-    backgroundColor: '#64748b',
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  buttonC: {
-    width: '100%',
-    backgroundColor: '#2563eb',
-    paddingVertical: 14,
-    borderRadius: 12,
-    marginBottom: 12,
-    alignItems: 'center',
-  },
-  seleccionado: {
-    backgroundColor: '#2563eb',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  estado: {
-    marginTop: 15,
-    fontSize: 16,
-    color: '#475569',
-  },
-});
